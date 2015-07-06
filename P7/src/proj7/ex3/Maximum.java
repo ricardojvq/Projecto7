@@ -5,18 +5,18 @@ import java.util.Vector;
 /**
  * Created by ricardoquirino on 06/07/15.
  */
-public class Minimum implements Runnable {
+public class Maximum implements Runnable {
     private Vector<Double> v;
 
-    public Minimum(Vector<Double> v) {
+    public Maximum(Vector<Double> v) {
         this.v = v;
     }
     @Override
     public void run() {
-        Double min = v.get(0);
+        Double max = 0.0;
         for (double valor:v) {
-            if (valor < min) min = valor;
+            if (valor > max) max = valor;
         }
-        System.out.println("Mínimo: "+min);
+        System.out.println("Máximo: "+max);
     }
 }

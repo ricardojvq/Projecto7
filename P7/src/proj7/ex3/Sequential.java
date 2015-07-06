@@ -2,15 +2,11 @@ package proj7.ex3;
 
 import java.util.Scanner;
 import java.util.Vector;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
-import java.util.concurrent.RunnableFuture;
 
 /**
  * Created by ricardoquirino on 06/07/15.
  */
-public class Menu {
+public class Sequential {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         int stop = 0;
@@ -38,20 +34,18 @@ public class Menu {
 
         average = average/(valores.size());
         System.out.println("Média: "+average);
-        ExecutorService pool = Executors.newFixedThreadPool(2);
-        Runnable r1 = new Minimum(valores);
-        Runnable r2 = new Maximum(valores);
-        Future<?> f1 = pool.submit(r1);
-        Future<?> f2 = pool.submit(r2);
+        Double min = valores.get(0);
+        Double max = 0.0;
+        for (Double v:valores) {
+            if (v > max) {
+                max = v;
+            } else if (v < min) min = v;
+        }
+
+        System.out.println("Mínimo: "+min);
+        System.out.println("Máximo: "+max);
         long end = System.nanoTime();
-        Runnable r3 = new Runnable() {
-            @Override
-            public void run() {
-                System.out.println("Tempo: "+(end-start)/1000000.0+" ms");
-            }
-        };
-        Future<?> f3 = pool.submit(r3);
-        pool.shutdown();
+        System.out.println("Tempo: "+(end-start)/1000000.0+" ms");
 
     }
 }
