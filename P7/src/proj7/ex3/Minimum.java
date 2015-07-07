@@ -6,15 +6,15 @@ import java.util.Vector;
  * Created by ricardoquirino on 06/07/15.
  */
 public class Minimum implements Runnable {
-    private Vector<Double> v;
+    private Double[] vector;
 
-    public Minimum(Vector<Double> v) {
-        this.v = v;
+    public Minimum(Double[] v) {
+        this.vector = v;
     }
     @Override
     public void run() {
-        Double min = v.get(0);
-        for (double valor:v) {
+        Double min = vector[0];
+        for (double valor:vector) {
             if (valor < min) min = valor;
         }
         System.out.println("Mínimo: "+min);

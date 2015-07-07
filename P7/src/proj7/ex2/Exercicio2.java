@@ -20,7 +20,6 @@ public class Exercicio2 {
         while (stop > 0) {
             Runnable o = new Order();
             pool.execute(o);
-            System.out.println(stop);
             stop--;
         }
 

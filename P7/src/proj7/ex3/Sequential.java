@@ -2,50 +2,64 @@ package proj7.ex3;
 
 import java.util.Scanner;
 import java.util.Vector;
+import java.util.concurrent.Semaphore;
 
 /**
  * Created by ricardoquirino on 06/07/15.
  */
-public class Sequential {
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        int stop = 0;
-        Vector<Double> valores = new Vector<>();
-        while (stop == 0) {
-            System.out.println("[1] Introduzir\n" +
-                    "[2] Sair\n");
-            int opcao = sc.nextInt();
-            sc.nextLine();
-            if (opcao == 1) {
-                System.out.print("\nIntroduza um número (1, 2,5, 10, 100,51, etc..\n");
-                Double temp = sc.nextDouble();
-                sc.nextLine();
-                valores.add(temp);
-            } else {
-                sc.close();
-                break;
-            }
-        }
-        long start = System.nanoTime();
-        Double average = 0.0;
-        for (double d:valores) {
-            average += d;
+public class Sequential implements Runnable {
+
+    private Double[] vector;
+    private Semaphore semaphores;
+
+    public Sequential(Double[] v, Semaphore semaphore) {
+        vector = v;
+        semaphores = semaphore;
+    }
+
+    public void getAverage() {
+        Double sum = 0.0;
+        for (int i = 0; i < vector.length; i++) {
+            sum += vector[i];
         }
 
-        average = average/(valores.size());
-        System.out.println("Média: "+average);
-        Double min = valores.get(0);
+        System.out.println("Média: "+sum/(vector.length));
+    }
+
+    public void getMaximum() {
         Double max = 0.0;
-        for (Double v:valores) {
-            if (v > max) {
-                max = v;
-            } else if (v < min) min = v;
+        for (int i = 0; i < vector.length; i++) {
+            if (vector[i] > max) max = vector[i];
+        }
+        System.out.println("Máximo: "+max);
+    }
+
+    public void getMinimum() {
+        Double min = vector[0];
+        for (int i = 0; i < vector.length; i++) {
+            if (vector[i] < min) min = vector[i];
+        }
+        System.out.println("Mínimo: "+min);
+    }
+
+    @Override
+    public void run() {
+        try {
+            semaphores.acquire();
+            System.out.println("Sequencial: \n");
+            long start = System.nanoTime();
+            getAverage();
+            getMaximum();
+            getMinimum();
+            long end = System.nanoTime();
+            new Thread(() -> {
+                System.out.println("Tempo: "+(end-start)/1000000.0+" ms");
+            }).start();
+            semaphores.release();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
 
-        System.out.println("Mínimo: "+min);
-        System.out.println("Máximo: "+max);
-        long end = System.nanoTime();
-        System.out.println("Tempo: "+(end-start)/1000000.0+" ms");
 
     }
 }
