@@ -17,13 +17,9 @@ public class Exercicio2 {
             Order.semaphores[i] = new Semaphore(0);
         }
         ExecutorService pool = Executors.newFixedThreadPool(nrTotal);
-        while (stop > 0) {
-            Runnable o = new Order();
-            pool.execute(o);
-            stop--;
+        for (int i = 1; i <= nrTotal; i++) {
+            new Thread(new Order(),Integer.toString(i)).start();
         }
-
-        pool.shutdown();
 
 
 

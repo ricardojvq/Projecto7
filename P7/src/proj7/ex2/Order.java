@@ -16,8 +16,9 @@ public class Order implements Runnable {
 
     @Override
     public void run() {
-        int threadid = (int)Thread.currentThread().getId()%10 + 1;
+        int threadid = Integer.parseInt(Thread.currentThread().getName());
         if (threadid == 2) {
+
             System.out.println("Thread #" + threadid);
             semaphores[threadid-1].release();
         } else if (threadid % 2 == 0) {
