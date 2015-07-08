@@ -9,11 +9,10 @@ import java.util.concurrent.*;
  */
 public class Paralelo implements Runnable {
     private Double[] vector;
-    private Semaphore semaphores;
-
-    public Paralelo(Double[] v, Semaphore s) {
+    private CyclicBarrier barrier1;
+    private CyclicBarrier barrier2;
+    public Paralelo(Double[] v) {
         vector = v;
-        semaphores = s;
     }
 
     public void getAverage() {
@@ -22,28 +21,32 @@ public class Paralelo implements Runnable {
             sum += vector[i];
         }
 
-        System.out.println("Média: "+sum/(vector.length));
+        System.out.println("Média: " + sum / (vector.length));
+        try {
+            Thread.sleep(100);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public void run() {
         try {
-            semaphores.acquire();
+            Main.semaphore.acquire();
             System.out.println("\nParalelo: \n");
             long start = System.nanoTime();
-            new Thread(new Maximum(vector)).start();
-            new Thread(new Minimum(vector)).start();
+            barrier1 = new CyclicBarrier(1,new Maximum(vector));
+            barrier2 = new CyclicBarrier(1,new Minimum(vector));
             getAverage();
+            barrier1.await();
+            barrier2.await();
             long end = System.nanoTime();
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    System.out.println("Tempo: " + (end - start) / 1000000.0 + " ms");
-                }
-            }).start();
-            semaphores.release();
+            Main.stats[Main.globalCount][2] = (end-start)/1000000.0;
+            Main.semaphore.release();
         } catch (InterruptedException e) {
             e.printStackTrace();
+        } catch (BrokenBarrierException be) {
+            be.printStackTrace();
         }
 
     }

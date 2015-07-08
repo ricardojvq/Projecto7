@@ -2,7 +2,7 @@ package proj7.ex3;
 
 import java.util.Scanner;
 import java.util.Vector;
-import java.util.concurrent.Semaphore;
+import java.util.concurrent.*;
 
 /**
  * Created by ricardoquirino on 06/07/15.
@@ -10,11 +10,10 @@ import java.util.concurrent.Semaphore;
 public class Sequential implements Runnable {
 
     private Double[] vector;
-    private Semaphore semaphores;
+    private CyclicBarrier barrier;
 
-    public Sequential(Double[] v, Semaphore semaphore) {
+    public Sequential(Double[] v) {
         vector = v;
-        semaphores = semaphore;
     }
 
     public void getAverage() {
@@ -44,22 +43,28 @@ public class Sequential implements Runnable {
 
     @Override
     public void run() {
+
         try {
-            semaphores.acquire();
+            Main.semaphore.acquire();
             System.out.println("Sequencial: \n");
+            ExecutorService executor = Executors.newSingleThreadExecutor();
             long start = System.nanoTime();
-            getAverage();
-            getMaximum();
-            getMinimum();
+            barrier = new CyclicBarrier(1,new Runnable() {
+                @Override
+                public void run() {
+                    getAverage();
+                    getMaximum();
+                    getMinimum();
+                }
+            });
+            barrier.await();
             long end = System.nanoTime();
-            new Thread(() -> {
-                System.out.println("Tempo: "+(end-start)/1000000.0+" ms");
-            }).start();
-            semaphores.release();
+            Main.stats[Main.globalCount][1] = (end-start)/1000000.0;
+            Main.semaphore.release();
         } catch (InterruptedException e) {
             e.printStackTrace();
+        } catch (BrokenBarrierException be) {
+            be.printStackTrace();
         }
-
-
     }
 }
