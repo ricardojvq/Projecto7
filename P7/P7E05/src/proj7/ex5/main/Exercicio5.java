@@ -1,6 +1,6 @@
 package proj7.ex5.main;
 
-import proj7.ex5.PPRun;
+import proj7.ex5.exchanger.PPRun;
 
 import java.util.concurrent.*;
 

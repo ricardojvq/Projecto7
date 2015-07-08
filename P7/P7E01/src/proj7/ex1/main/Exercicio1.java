@@ -1,35 +1,38 @@
 package proj7.ex1.main;
 
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
+import proj7.ex1.tasks.*;
+
+import java.util.concurrent.*;
 
 /**
  * Created by ricardoquirino on 06/07/15.
  */
 public class Exercicio1 {
-    public static void main(String[] args) {
 
+    public static ArrayBlockingQueue<Integer> count = new ArrayBlockingQueue<Integer>(8);
+
+    public static void main(String[] args) {
+        ExecutorService single = Executors.newSingleThreadExecutor();
+        for (int i = 1; i <= 8; i++) {
+            int num = i;
+            Runnable runnable = new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        Exercicio1.count.put(num);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            };
+            single.submit(runnable);
+        }
+        single.shutdown();
         ExecutorService fixedPool = Executors.newFixedThreadPool(2);
 
-        Runnable task1 = new TaskOne();
-        Runnable task2 = new TaskTwo();
-        Runnable task3 = new TaskThree();
-        Runnable task4 = new TaskFour();
-        Runnable task5 = new TaskFive();
-        Runnable task6 = new TaskSix();
-        Runnable task7 = new TaskSeven();
-        Runnable task8 = new TaskEight();
-
-
-        Future<?> taskOne = fixedPool.submit(task1);
-        Future<?> taskTwo = fixedPool.submit(task2);
-        Future<?> taskThree = fixedPool.submit(task3);
-        Future<?> taskFour = fixedPool.submit(task4);
-        Future<?> taskFive = fixedPool.submit(task5);
-        Future<?> taskSix = fixedPool.submit(task6);
-        Future<?> taskSeven = fixedPool.submit(task7);
-        Future<?> taskEight = fixedPool.submit(task8);
+        for (int i = 0; i < 8; i++) {
+            fixedPool.submit(new GenericTask());
+        }
 
         fixedPool.shutdown();
     }

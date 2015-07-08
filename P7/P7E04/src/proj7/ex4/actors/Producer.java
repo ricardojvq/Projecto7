@@ -1,5 +1,7 @@
 package proj7.ex4.actors;
 
+import proj7.ex4.main.Exercicio4;
+
 import java.util.Random;
 import java.util.concurrent.ArrayBlockingQueue;
 
@@ -25,9 +27,9 @@ public class Producer implements Runnable {
 
     public int sleeping() {
         Random rd = new Random();
-        int min = 1;
+        int min = 5;
         int max = 50;
-        return min + (max - min + 1);
+        return min + rd.nextInt(max - min + 1);
     }
 
     @Override
@@ -36,13 +38,14 @@ public class Producer implements Runnable {
             try {
                 if (queue.remainingCapacity() == 0) {
                     System.out.println("\n******************* FILA CHEIA *******************\n");
+                    Exercicio4.flag = 1;
                     break;
                 }
                 for (int i = 0; i <= queue.remainingCapacity(); i++) {
                     Double d = add();
                     System.out.println("Valor: " + d + ", adicionado à queue através da Thread: " + Thread.currentThread().getName());
                 }
-                Thread.sleep(sleeping() * 0);
+                Thread.sleep(sleeping());
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

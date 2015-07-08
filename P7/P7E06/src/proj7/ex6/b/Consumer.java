@@ -11,23 +11,25 @@ public class Consumer implements Runnable {
     @Override
     public void run() {
         try {
-            System.out.println("À espera de permissão...\n\n");
-            Main.firstLatch.countDown();
-            System.out.println("Permissão garantida!\n\n");
-            Main.secondLatch.await();
+            System.out.println("[ CONSUMER ] A preparar para dar permissão para produzir...\n");
+            Exercicio6b.firstLatch.countDown();
+            System.out.println("[ CONSUMER ] Permissão garantida!\n");
+            Exercicio6b.secondLatch.await();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+        System.out.println("\n[ CONSUMER ] Showing the numbers: \n");
         for (int i = 0; i < 40; i++) {
             try {
 
-                Integer itg = Main.nrs.take();
+                Integer itg = Exercicio6b.nrs.take();
                 System.out.print(itg+", ");
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
 
         }
+        System.out.println();
 
     }
 }

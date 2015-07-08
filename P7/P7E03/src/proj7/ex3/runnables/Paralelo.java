@@ -1,7 +1,7 @@
 package proj7.ex3.runnables;
 
-import proj7.ex3.Maximum;
-import proj7.ex3.Minimum;
+import proj7.ex3.operations.Maximum;
+import proj7.ex3.operations.Minimum;
 import proj7.ex3.main.Exercicio3;
 
 import java.util.concurrent.*;

@@ -13,7 +13,7 @@ public class Producer implements Runnable {
     @Override
     public void run() {
         try {
-            Main.firstLatch.await();
+            Exercicio6b.firstLatch.await();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -23,12 +23,12 @@ public class Producer implements Runnable {
             int max = 1000;
             Integer r = min + rd.nextInt(max - min + 1);
             try {
-                Main.nrs.put(r);
-                System.out.println(r + " adicionado à lista. ("+Thread.currentThread().getName()+")");
+                Exercicio6b.nrs.put(r);
+                System.out.println("[ PRODUCER ] Número " + r + " adicionado à lista. ("+Thread.currentThread().getName()+")");
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
-        Main.secondLatch.countDown();
+        Exercicio6b.secondLatch.countDown();
     }
 }

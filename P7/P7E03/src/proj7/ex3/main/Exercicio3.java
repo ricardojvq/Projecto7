@@ -1,7 +1,7 @@
 package proj7.ex3.main;
 
-import proj7.ex3.Paralelo;
-import proj7.ex3.Sequential;
+import proj7.ex3.runnables.Paralelo;
+import proj7.ex3.runnables.Sequential;
 
 import java.util.Random;
 import java.util.concurrent.Semaphore;

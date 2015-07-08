@@ -1,5 +1,7 @@
 package proj7.ex2.main;
 
+import proj7.ex2.other.Order;
+
 import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
