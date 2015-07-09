@@ -9,9 +9,9 @@ import java.util.concurrent.*;
  */
 public class Exercicio5 {
     public static void main(String[] args) throws ExecutionException, InterruptedException {
-        Exchanger<String> exchanger = new Exchanger<String>();
-        new Thread(new PPRun(exchanger,"Ping!")).start();
-        new Thread(new PPRun(exchanger,"Pong!")).start();
+        Exchanger<Boolean> exchanger = new Exchanger<Boolean>();
+        new Thread(new PPRun(exchanger,"Ping!",true)).start();
+        new Thread(new PPRun(exchanger,"Pong!",false)).start();
 
     }
 }
