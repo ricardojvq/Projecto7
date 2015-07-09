@@ -16,29 +16,32 @@ public class Sequential implements Runnable {
         vector = v;
     }
 
-    public void getAverage() {
+    public Double getAverage() {
         Double sum = 0.0;
         for (int i = 0; i < vector.length; i++) {
             sum += vector[i];
         }
 
         System.out.println("Média: "+sum/(vector.length));
+        return sum;
     }
 
-    public void getMaximum() {
+    public Double getMaximum() {
         Double max = 0.0;
         for (int i = 0; i < vector.length; i++) {
             if (vector[i] > max) max = vector[i];
         }
         System.out.println("Máximo: "+max);
+        return max;
     }
 
-    public void getMinimum() {
+    public Double getMinimum() {
         Double min = vector[0];
         for (int i = 0; i < vector.length; i++) {
             if (vector[i] < min) min = vector[i];
         }
         System.out.println("Mínimo: "+min);
+        return min;
     }
 
     @Override
@@ -47,24 +50,15 @@ public class Sequential implements Runnable {
         try {
             Exercicio3.semaphore.acquire();
             System.out.println("Sequencial: \n");
-            ExecutorService executor = Executors.newSingleThreadExecutor();
             long start = System.nanoTime();
-            barrier = new CyclicBarrier(1,new Runnable() {
-                @Override
-                public void run() {
-                    getAverage();
-                    getMaximum();
-                    getMinimum();
-                }
-            });
-            barrier.await();
+            getAverage();
+            getMaximum();
+            getMinimum();
             long end = System.nanoTime();
             Exercicio3.stats[Exercicio3.globalCount][1] = (end-start)/1000000.0;
             Exercicio3.semaphore.release();
         } catch (InterruptedException e) {
             e.printStackTrace();
-        } catch (BrokenBarrierException be) {
-            be.printStackTrace();
         }
     }
 }

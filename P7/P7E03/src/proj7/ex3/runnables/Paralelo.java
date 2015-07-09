@@ -37,18 +37,22 @@ public class Paralelo implements Runnable {
             Exercicio3.semaphore.acquire();
             System.out.println("\nParalelo: \n");
             long start = System.nanoTime();
-            barrier1 = new CyclicBarrier(1,new Maximum(vector));
-            barrier2 = new CyclicBarrier(1,new Minimum(vector));
+            ExecutorService pool = Executors.newFixedThreadPool(2);
+            Future<Double> max = pool.submit(new Maximum(vector));
+            Future<Double> min = pool.submit(new Minimum(vector));
+            try {
+                max.get();
+                min.get();
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            }
+            pool.shutdown();
             getAverage();
-            barrier1.await();
-            barrier2.await();
             long end = System.nanoTime();
             Exercicio3.stats[Exercicio3.globalCount][2] = (end-start)/1000000.0;
             Exercicio3.semaphore.release();
         } catch (InterruptedException e) {
             e.printStackTrace();
-        } catch (BrokenBarrierException be) {
-            be.printStackTrace();
         }
 
     }

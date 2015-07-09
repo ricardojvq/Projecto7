@@ -16,18 +16,18 @@ public class Exercicio3 {
     public static void main(String[] args) throws InterruptedException {
 
         int count = 0;
-        for (int i = 10; i < 10000000; i = i * 10) {
+        for (int i = 100; globalCount < 6; i = i * 10) {
             System.out.println("");
-            Thread.sleep(1000);
-            int s = i * 10;
+            Thread.sleep(1500);
+            int s = i;
             stats[globalCount][0] = s*1.0;
             Double[] vector = new Double[s];
             System.out.println("Tamanho do Array: "+vector.length+"\n");
 
             for (int j = 0; j < vector.length; j++) {
                 Random dRd = new Random();
-                Double min = 100.0;
-                Double max = 10000000.0;
+                Double min = 1.0;
+                Double max = 100.0;
                 Double r = min + dRd.nextDouble()*(max - min);
                 vector[j] = r;
             }
@@ -40,6 +40,7 @@ public class Exercicio3 {
             while (ts.isAlive() && tp.isAlive()) {
                 // do Nothing
             }
+
             Thread.sleep(2000);
             globalCount++;
             System.out.println("\n\n ************************************** \n\n");
