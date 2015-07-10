@@ -1,7 +1,7 @@
 package proj7.ex8.main;
 
 import proj7.ex8.task.Specialist;
-import proj7.ex8.target.Target;
+import proj7.ex8.operator.Target;
 
 /**
  * Created by ricardoquirino on 08/07/15.
