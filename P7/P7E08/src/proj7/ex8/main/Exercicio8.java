@@ -1,10 +1,7 @@
 package proj7.ex8.main;
 
-import proj7.ex8.monitor.Specialist;
-
-import java.util.concurrent.Executor;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import proj7.ex8.task.Specialist;
+import proj7.ex8.target.Target;
 
 /**
  * Created by ricardoquirino on 08/07/15.
@@ -12,16 +9,10 @@ import java.util.concurrent.Executors;
 public class Exercicio8 {
     public static void main(String[] args) {
         final int numThreads = 10;
-        /*ExecutorService pool = Executors.newFixedThreadPool(numThreads);
+        Target target = new Target();
 
         for (int i = 0; i < numThreads; i++) {
-            pool.submit(new Specialist());
-        }
-
-        pool.shutdown();*/
-
-        for (int i = 0; i < numThreads; i++) {
-            new Thread(new Specialist(),Integer.toString(i)).start();
+            new Thread(new Specialist(target,i)).start();
         }
 
     }

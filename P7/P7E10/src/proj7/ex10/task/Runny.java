@@ -1,6 +1,6 @@
-package proj7.ex9.task;
+package proj7.ex10.task;
 
-import proj7.ex9.operator.Operator;
+import proj7.ex10.operator.Operator;
 
 /**
  * Created by ricardoquirino on 09/07/15.
@@ -15,14 +15,15 @@ public class Runny implements Runnable {
 
     @Override
     public void run() {
-        operator.enter((MyThread) Thread.currentThread());
+        operator.enter();
+        System.out.println("Thread " + Thread.currentThread().getId() + " is working...");
         try {
-            Thread.currentThread().sleep(1000);
-            System.out.println("Task with priority " + ((MyThread) (Thread.currentThread())).getMyPriority() + " working...\n");
-            Thread.currentThread().sleep(100);
+            Thread.currentThread().sleep(200);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
         operator.leave();
+
+
     }
 }
